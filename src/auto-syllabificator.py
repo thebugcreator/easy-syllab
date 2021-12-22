@@ -25,7 +25,7 @@ def get_ortho_rules(orthos):
     rules = dict()
     for ortho in orthos:
         try:
-            lvl1 = ortho.split("-")
+            lvl1 = ortho.split(" - ")
             lvl2 = lvl1[0].split(" ")
             tmp_letter = lvl2[0].strip()
             tmp_apr = lvl2[1].strip()
@@ -42,7 +42,7 @@ def read_phonetic_rules(path="../"):
         lines = codetxt.readlines()
         ptflag = False
         for line in lines:
-            if line == "Phonetique":
+            if line.strip() == "Phonetique":
                 ptflag = True
                 continue
             if ptflag and len(line) > 0:
@@ -54,11 +54,14 @@ def get_phonetic_rules(phonetics):
     rules = dict()
     for phonetic in phonetics:
         try:
-            lvl1 = phonetic.split("-")
+            lvl1 = phonetic.split(" - ")
             lvl2 = lvl1[0].split(" ")
             tmp_letter = lvl2[0].strip()
             tmp_apr = lvl2[1].strip()
-            tmp_form = "C" if lvl1[1].strip() == "consonant" else "V" if lvl1[1].strip() == "vowel" else "S"
+            tmp_form = "C" if lvl1[1].strip() == "consonant" \
+                else "V" if lvl1[1].strip() == "vowel" \
+                else "S" if lvl1[1].strip() == "semi-vowel" \
+                else "-"
             tmp_macro = ""
             try:
                 tmp_macro = lvl1[2].strip()
@@ -78,4 +81,4 @@ def determine_form(victim, rules):
 
 
 print(determine_form("abaise", get_ortho_rules(read_ortho_rules())))
-
+print(determine_form("eu", get_phonetic_rules(read_phonetic_rules())))
