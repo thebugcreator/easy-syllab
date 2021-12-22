@@ -5,7 +5,7 @@ def determine_articulation(path="../"):
         lines = artxt.readlines()
         for line in lines:
             if len(line) > 0:
-                pairs.append(line)
+                pairs.append([line.split()[0].strip(), [line.split()[1].strip()]])
     return pairs
 
 
@@ -62,11 +62,10 @@ def get_phonetic_rules(phonetics):
                 else "V" if lvl1[1].strip() == "vowel" \
                 else "S" if lvl1[1].strip() == "semi-vowel" \
                 else "-"
-            tmp_macro = ""
             try:
                 tmp_macro = lvl1[2].strip()
             except:
-                print("No macro type")
+                tmp_macro = ""
             rules[tmp_letter] = {"appearance": tmp_apr, "form": tmp_form, "macro": tmp_macro}
         except:
             continue
@@ -80,5 +79,17 @@ def determine_form(victim, rules):
     return output
 
 
+def get_segmentation_form(articulation):
+    parts = []
+    phonetic_rules = get_phonetic_rules(read_phonetic_rules())
+    rule_1 = "VV"
+    rule_2 = "VCV"
+    rule_3 = "VCCV"
+    rule_4 = "VCCCV"
+    form = determine_form(articulation, phonetic_rules)
+
+    pass
+
+
 print(determine_form("abaise", get_ortho_rules(read_ortho_rules())))
-print(determine_form("eu", get_phonetic_rules(read_phonetic_rules())))
+print(determine_form("e@Uj", get_phonetic_rules(read_phonetic_rules())))
